@@ -30,27 +30,34 @@ def generate_video(excerpt: str, zotero_key: str) -> str:
         'n=$((n+1)); '
         'convert -size 1080x1080 -background "#C6C8C4" -fill "#2a3425" '
         '-font "AvantGarde-Book" -weight Black -pointsize 115 -gravity west '
-        '-size 980x1080 caption:"$(echo "$line" | tr \'[:lower:]\' \'[:upper:]\')" '
+        '-size 980x1080 caption:"$(echo "$line")" '
         '-gravity center -extent 1080x1080 "fragment_$n.png"; '
         'echo "Generated fragment_$n.png"; done'
     )
     subprocess.run(cmd_images, shell=True, cwd=book_folder, check=True)
 
     # 2. Generate video (exactly as in spec)
+
     cmd_video = (
-        'ffmpeg -loop 1 -t 3 -i fragment_1.png '
-        '-loop 1 -t 3 -i fragment_2.png '
-        '-loop 1 -t 3 -i fragment_3.png '
-        '-loop 1 -t 3 -i fragment_4.png '
-        '-loop 1 -t 3 -i fragment_5.png '
+        'ffmpeg -loop 1 -t 5 -i fragment_1.png '
+        '-loop 1 -t 5 -i fragment_2.png '
+        '-loop 1 -t 5 -i fragment_3.png '
+        '-loop 1 -t 5 -i fragment_4.png '
+        '-loop 1 -t 5 -i fragment_5.png '
         '-filter_complex '
-        '"[0][1]xfade=transition=fade:duration=1:offset=2[ab];'
-        '[ab][2]xfade=transition=fade:duration=1:offset=4[abc];'
-        '[abc][3]xfade=transition=fade:duration=1:offset=6[abcd];'
-        '[abcd][4]xfade=transition=fade:duration=1:offset=8" '
+        '"[0:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v0];'
+        '[1:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v1];'
+        '[2:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v2];'
+        '[3:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v3];'
+        '[4:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v4];'
+        '[v0][v1]xfade=transition=fade:duration=1:offset=4[tmp1];'
+        '[tmp1][v2]xfade=transition=fade:duration=1:offset=8[tmp2];'
+        '[tmp2][v3]xfade=transition=fade:duration=1:offset=12[tmp3];'
+        '[tmp3][v4]xfade=transition=fade:duration=1:offset=16" '
         '-c:v libx264 -r 30 -pix_fmt yuv420p output.mp4'
     )
-    subprocess.run(cmd_video, shell=True, cwd=book_folder, check=True)
 
+    subprocess.run(cmd_video, shell=True, cwd=book_folder, check=True)
+    
     # Return relative path
     return os.path.join(zotero_key, 'output.mp4')

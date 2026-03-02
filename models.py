@@ -16,7 +16,7 @@ class Book:
         """Create a Book instance from a CSV row dictionary"""
         return cls(
             zotero_key=row.get('Id', ''),
-            note_html=row.get('Notes', ''),
+            note_html=row.get('Abstract Note', ''),
             date_modified=datetime.strptime(
                 row.get('Date Modified', ''), 
                 '%Y-%m-%d %H:%M:%S'
