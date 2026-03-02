@@ -1,29 +1,35 @@
-# test_data_loader.py
-from data_loader import load_books, load_posts, get_posted_keys
+# test_scheduler.py
+from scheduler import generate_schedule, count_posting_days
+from config import START_DATE, END_DATE, POSTING_DAYS
+from datetime import datetime
 
-print("=== Testing data_loader ===\n")
+print("=== Testing scheduler ===\n")
 
-books = load_books()
-print(f"Books with notes: {len(books)}")
-if books:
-    print(f"First 5 keys: {[b.zotero_key for b in books[:5]]}")
-    print(f"First book date_modified: {books[0].date_modified}")
+schedule = generate_schedule()
+print(f"Start date: {START_DATE}")
+print(f"End date: {END_DATE}")
+print(f"Posting days: {POSTING_DAYS} (0=Mon,4=Fri,5=Sat)")
+print(f"Total posting days: {count_posting_days()}")
+print(f"Schedule length: {len(schedule)}")
+
+if schedule:
+    print(f"\nFirst 5 posting dates:")
+    for i, dt in enumerate(schedule[:5], 1):
+        print(f"{i}. {dt.strftime('%a, %Y-%m-%d %H:%M')}")
+
+    print(f"\nLast 5 posting dates:")
+    for dt in schedule[-5:]:
+        print(f"   {dt.strftime('%a, %Y-%m-%d %H:%M')}")
+
+    # Verify all are at 11:00
+    times_ok = all(dt.hour == 11 and dt.minute == 0 for dt in schedule)
+    print(f"\nAll at 11:00? {times_ok}")
+
+    # Verify no weekends except Friday/Saturday
+    for dt in schedule:
+        if dt.weekday() not in POSTING_DAYS:
+            print(f"ERROR: {dt} is not a posting day!")
 else:
-    print("No books loaded.")
-
-print("\n---")
-
-posts = load_posts()
-print(f"Existing posts: {len(posts)}")
-if posts:
-    print(f"First post key: {posts[0].zotero_key}")
-    print(f"First post date: {posts[0].publish_datetime}")
-
-print("\n---")
-
-posted_keys = get_posted_keys()
-print(f"Posted keys count: {len(posted_keys)}")
-if posted_keys:
-    print(f"Posted keys sample: {list(posted_keys)[:5]}")
+    print("No schedule generated.")
 
 print("\nTest complete.")
