@@ -1,3 +1,17 @@
+# Use guide
+
+0. In its current version this scripts (in progress) requires a MOREL site built with a Zotero library.
+1. Select a fragment no shorter than 280 characters and no longer than 320 characters from your book excerpt or description and add it to the "abstract" field of the correspondent item of the Zotero library
+2. Repeat until completing 39 fragments
+3. Edit the ´config.py´ file to link your Zotero site's ´books_zotero.csv´ file, and ´SM_posts´ folder
+4. Run the simple_test.py script to concatenate all the scripts
+
+# Next steps
+
+X Add a BibAV identification 
+
+# Founding prompt
+
 This script is meant to be ran every 91 days, after curating 39 books. Curating can mean adding an excerpt and the missing metadata from the Google Books database, or adding the correct library information. Also, in both cases, the editor has to choose a < 350 characters fragment from the excerpt (counting from the beginning), and mark it with <!-- post -->.
 
 The script must have a beggining date and an end date, counting 91 days.
