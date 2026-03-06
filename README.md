@@ -8,7 +8,11 @@
 
 # Next steps
 
-X Add a BibAV identification 
+X Add a BibAV identification
+
+# Future improvements
+
+- Add a screen capture of the book's page in the site
 
 # Founding prompt
 
