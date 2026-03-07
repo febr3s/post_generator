@@ -8,14 +8,14 @@ import re
 class Book:
     """Represents a book from Zotero - only fields needed for processing"""
     zotero_key: str
-    note_html: str  # Contains the excerpt with <!--post--> marker
+    note_html: str 
     date_modified: datetime  # To find last modified items
     
     @classmethod
     def from_csv_row(cls, row: Dict[str, Any]) -> 'Book':
         """Create a Book instance from a CSV row dictionary"""
         return cls(
-            zotero_key=row.get('Id', ''),
+            zotero_key=row.get('Key', ''),
             note_html=row.get('Abstract Note', ''),
             date_modified=datetime.strptime(
                 row.get('Date Modified', ''), 

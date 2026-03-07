@@ -44,7 +44,7 @@ def generate_video(excerpt: str, zotero_key: str) -> str:
         '-loop 1 -t 5 -i fragment_3.png '
         '-loop 1 -t 5 -i fragment_4.png '
         '-loop 1 -t 5 -i fragment_5.png '
-        '-i watermark.png '
+        '-i ../watermark.png '
         '-filter_complex '
         '"[0:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v0];'
         '[1:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v1];'
@@ -57,7 +57,7 @@ def generate_video(excerpt: str, zotero_key: str) -> str:
         '[tmp3][v4]xfade=transition=fade:duration=1:offset=16[final];'
         '[5:v]scale=150:-1,format=yuv420p[wm];'
         '[final][wm]overlay=W-w-10:H-h-10" '
-        '-c:v libx264 -r 30 -pix_fmt yuv420p output_with_watermark.mp4'
+        '-c:v libx264 -r 30 -pix_fmt yuv420p output.mp4'
     )
 
     subprocess.run(cmd_video, shell=True, cwd=book_folder, check=True)

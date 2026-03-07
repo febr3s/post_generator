@@ -4,7 +4,7 @@ ffmpeg \
 -loop 1 -t 5 -i fragment_3.png \
 -loop 1 -t 5 -i fragment_4.png \
 -loop 1 -t 5 -i fragment_5.png \
--i watermark.png \
+-i ../watermark.png \
 -filter_complex "[0:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v0]; [1:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v1]; [2:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v2]; [3:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v3]; [4:v]scale=1080:1080,setsar=1,format=yuv420p,settb=AVTB,setpts=PTS-STARTPTS[v4]; [v0][v1]xfade=transition=fade:duration=1:offset=4[tmp1]; [tmp1][v2]xfade=transition=fade:duration=1:offset=8[tmp2]; [tmp2][v3]xfade=transition=fade:duration=1:offset=12[tmp3]; [tmp3][v4]xfade=transition=fade:duration=1:offset=16[final]; [5:v]scale=150:-1,format=yuv420p[wm]; [final][wm]overlay=W-w-10:H-h-10" \
 -c:v libx264 -r 30 -pix_fmt yuv420p \
 output_with_watermark.mp4
