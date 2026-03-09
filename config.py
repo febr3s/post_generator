@@ -1,6 +1,8 @@
 # config.py
 import os
 from datetime import datetime, timedelta
+from dotenv import load_dotenv
+load_dotenv()
 
 # Paths - adjust these as needed
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -31,8 +33,8 @@ VIDEO_SETTINGS = {
 }
 
 # Telegram settings
-TELEGRAM_BOT_TOKEN = None  # Set to None to disable notifications
-TELEGRAM_CHAT_ID = None
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')  # Set to None to disable notifications
+TELEGRAM_CHAT_ID = os.getenv('TELEGRAM_CHAT_ID')
 
 def validate_config():
     """Check if required directories exist and create them if needed"""
