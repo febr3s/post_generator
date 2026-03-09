@@ -12,7 +12,7 @@ def load_books() -> List[Book]:
         with open(ZOTERO_CSV_PATH, 'r', encoding='utf-8-sig') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                if row.get('Notes'):  # only books with notes
+                if row.get('Abstract Note'):  # only books with notes
                     books.append(Book.from_csv_row(row))
     except FileNotFoundError:
         print(f"Error: Zotero CSV not found at {ZOTERO_CSV_PATH}")

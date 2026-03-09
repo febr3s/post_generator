@@ -10,18 +10,45 @@ class Book:
     zotero_key: str
     note_html: str 
     date_modified: datetime  # To find last modified items
-    
+    title: str
+    author: str
+    year: Optional[str]          # Some books may not have year
+    publisher: Optional[str]
+    blurb: bool                   # TRUE/FALSE in CSV
+    edition: Optional[int]        # may be empty
+    library: Optional[str]
+
     @classmethod
+
     def from_csv_row(cls, row: Dict[str, Any]) -> 'Book':
-        """Create a Book instance from a CSV row dictionary"""
+        # Helper to convert CSV string to boolean
+        def to_bool(val: str) -> bool:
+            return str(val).strip().upper() in ('TRUE', '1', 'YES')
+
+        # Helper to convert to int if possible
+        def to_int(val: str) -> Optional[int]:
+            try:
+                return int(val) if val else None
+            except (ValueError, TypeError):
+                return None
+                
         return cls(
             zotero_key=row.get('Key', ''),
             note_html=row.get('Abstract Note', ''),
             date_modified=datetime.strptime(
                 row.get('Date Modified', ''), 
                 '%Y-%m-%d %H:%M:%S'
-            )
+            ),
+            # Add the missing fields:
+            title=row.get('Title', ''),
+            author=row.get('Author', ''),
+            year=row.get('Publication Year', ''),
+            publisher=row.get('Publisher', ''),
+            blurb=to_bool(row.get('Blurb', '')),
+            edition=to_int(row.get('Edition', '')),
+            library=row.get('Library', '')
         )
+        
     
     def extract_excerpt(self) -> str:
         """
@@ -59,14 +86,15 @@ class Post:
     zotero_key: str
     publish_datetime: datetime  # When to post
     video_source: str  # Path to video file (relative)
-    # No caption fields - they come from the Jekyll project
-    
+    caption: str                    # NEW: the full caption text
+        
     def to_csv_row(self) -> Dict[str, str]:
         """Convert to dictionary for CSV writing"""
         return {
             'Zotero key': self.zotero_key,
             'Publish time (day, date, time)': self.publish_datetime.strftime('%a, %-m-%-d-%Y, %I:%M %p'),
             'Video source': self.video_source,
+            'Caption': self.caption,    # NEW column
             # Note: Captions will be read from markdown files when needed for posting
         }
     
@@ -82,5 +110,6 @@ class Post:
         return cls(
             zotero_key=row.get('Zotero key', ''),
             publish_datetime=publish_datetime,
-            video_source=row.get('Video source', '')
+            video_source=row.get('Video source', ''),
+            caption=row.get('Caption', '')
         )

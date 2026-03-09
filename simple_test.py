@@ -1,19 +1,18 @@
-# test_video_generator_with_real_data.py
-from data_loader import load_books
+# test_post_creator.py
+from data_loader import load_books, load_posts
 from selector import select_books
-from video_generator import generate_video
+from post_creator import create_post
 import os
 from config import OUTPUT_DIR
 
-print("=== Testing video_generator with real CSV data ===\n")
+print("=== Testing post_creator with real CSV data ===\n")
 
 # Load books
 books = load_books()
-print(f"Loaded {len(books)} books with notes")
+print(f"Loaded {len(books)} books with abstracts")
 
-# Get one book (first eligible)
-posted_keys = set()  # empty for testing
-selected = select_books(books, posted_keys, limit=1)
+# Get one eligible book (most recent, treat all as eligible for test)
+selected = select_books(books, set(), limit=1)
 
 if not selected:
     print("No books available")
@@ -21,35 +20,46 @@ if not selected:
 
 book = selected[0]
 print(f"Selected book: {book.zotero_key}")
-print(f"Date modified: {book.date_modified}")
+print(f"Title: {book.title}")
+print(f"Author: {book.author}")
+print(f"Year: {book.year}")
+print(f"Publisher: {book.publisher}")
+print(f"Blurb: {book.blurb}")
+print(f"Edition: {book.edition}")
+print(f"Library: {book.library}")
+print(f"Abstract excerpt length: {len(book.extract_excerpt())} characters")
 
-# Extract excerpt
-excerpt = book.extract_excerpt()
-print(f"Excerpt length: {len(excerpt)} characters")
-print(f"Excerpt preview: {excerpt[:100]}...")
-
-# Generate video
-print(f"\nGenerating video...")
+# Create post
+print(f"\nCreating post...")
 try:
-    video_path = generate_video(excerpt, book.zotero_key)
-    print(f"✓ Video generated at: {video_path}")
-    
-    # Check files
-    book_folder = os.path.join(OUTPUT_DIR, book.zotero_key)
-    for i in range(1, 6):
-        img = os.path.join(book_folder, f"fragment_{i}.png")
-        if os.path.exists(img):
-            print(f"  ✓ fragment_{i}.png exists ({os.path.getsize(img)} bytes)")
+    post = create_post(book)
+    if post:
+        print(f"✅ Post created successfully!")
+        print(f"   Zotero key: {post.zotero_key}")
+        print(f"   Publish datetime: {post.publish_datetime}")
+        print(f"   Video source: {post.video_source}")
+        print(f"   Caption preview: {post.caption[:150]}...")
+
+        # Verify video files
+        book_folder = os.path.join(OUTPUT_DIR, book.zotero_key)
+        video_path = os.path.join(book_folder, "output.mp4")
+        if os.path.exists(video_path):
+            print(f"   ✅ Video file exists: {video_path}")
         else:
-            print(f"  ✗ fragment_{i}.png missing")
-    
-    video = os.path.join(book_folder, "output.mp4")
-    if os.path.exists(video):
-        print(f"  ✓ output.mp4 exists ({os.path.getsize(video)} bytes)")
+            print(f"   ❌ Video file missing: {video_path}")
+
+        # Verify post was saved to CSV
+        all_posts = load_posts()
+        matching = [p for p in all_posts if p.zotero_key == book.zotero_key]
+        if matching:
+            saved_post = matching[-1]
+            print(f"   ✅ Post found in posts.csv")
+            print(f"      Caption in CSV: {saved_post.caption[:100]}...")
+        else:
+            print(f"   ❌ Post not found in posts.csv")
     else:
-        print(f"  ✗ output.mp4 missing")
-        
+        print(f"❌ create_post returned None (no free dates or error)")
 except Exception as e:
-    print(f"✗ Error: {e}")
+    print(f"❌ Exception: {e}")
 
 print("\nTest complete.")
