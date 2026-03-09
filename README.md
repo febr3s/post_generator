@@ -39,3 +39,16 @@ Create a folder for each book named with the Zotero key, and place the images an
 	- Source to de video
 8. Repeat until finishing the elegible posts. 
 9. Set up the cron job, to send a message every time a post is due via Telegram, with the correspondent content. Also set up a separate message to let the user know every monday how many weeks left before running out of content.
+
+# Caption generation pre-template
+
+En {{book.Year}} {{book.Publisher}} <!--the following placeholder will be used to alternate several expresions that will be chosen from a list -->{{reprodujo/imprimió/llevó a la imprenta/tiró-editó...}} _{{book.Title}}_, de {{book.Author}}, {% if book.Blurb == true %}{{de la que {% if book.Edition == 1 %} {{por primera vez}}{% endif %} dijeron que {% else %}donde {% if book.Edition == 1 %} {{por primera vez}}{% endif %} dijo que}}: {% if instagramPost == true %}{{ book.Notes % picado en <!--post--> }}{% endif %}. 
+
+{% if book.Library =! nil && book.Library =! ""} Una copia se conserva en {{ book.Library }}{% endif %}. Hoy está respaldada en el archivo público de BibAV. 
+
+Descárgalo aquí: https://morelrep.github.io/BibAV/books/instruccion-pastoral-sobre-el-guevara-y-lira-1857-n9ipzbju
+
+Apoya el trabajo de BibAV aquí: https://morelrep.github.io/tienda.md
+
+
+¿Tienes alguna información que agregar o corregir sobre este título o esta copia? Déjala en comentarios.
