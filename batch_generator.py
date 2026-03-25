@@ -33,7 +33,7 @@ def main():
 
     # 4. Select eligible books (up to available slots)
     #    The selector already returns max 29 by default, but we cap at available_slots
-    limit = min(29, available_slots)
+    limit = min(39, available_slots)
     selected = select_books(books, posted_keys, limit=limit)
 
     if not selected:

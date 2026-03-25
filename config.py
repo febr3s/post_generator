@@ -11,11 +11,11 @@ POSTS_DB_PATH = os.path.join(BASE_DIR, 'posts.csv')
 OUTPUT_DIR = os.path.join(BASE_DIR, 'video_output')  # Will create subfolders by Zotero key
 
 # Date range for posting schedule (91 days)
-START_DATE = datetime(2026, 3, 16)  # First Monday of the cycle (year, month, day)
+START_DATE = datetime(2026, 3, 25)  # First Monday of the cycle (year, month, day)
 END_DATE = START_DATE + timedelta(days=91)
 
 # Posting schedule
-POSTING_DAYS = [0, 4, 5]  # Monday=0, Friday=4, Saturday=5
+POSTING_DAYS = [0, 2, 5]  # Monday=0, Wednesday=2, Saturday=5
 POSTING_HOUR = 11
 POSTING_MINUTE = 0
 

@@ -2,7 +2,7 @@
 from typing import List, Set
 from models import Book
 
-def select_books(books: List[Book], posted_keys: Set[str], limit: int = 29) -> List[Book]:
+def select_books(books: List[Book], posted_keys: Set[str], limit: int = 39) -> List[Book]:
     """
     Return the most recently modified books that:
     - have a note (assumed already filtered in books list)
