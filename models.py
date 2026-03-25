@@ -46,7 +46,7 @@ class Book:
             publisher=row.get('Publisher', ''),
             blurb=to_bool(row.get('Blurb', '')),
             edition=to_int(row.get('Edition', '')),
-            library=row.get('Library', '')
+            library=row.get('Archive Location', '')
         )
         
     

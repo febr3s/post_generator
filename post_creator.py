@@ -26,15 +26,13 @@ def generate_caption(book: Book) -> str:
     # List of possible verbs to alternate (randomly chosen here)
     verbos = [
         "reprodujo",
-        "imprimió",
-        "llevó a la imprenta",
         "tiró",
         "editó"
     ]
     verbo = random.choice(verbos)
 
     # Determine if there is a blurb (book.blurb is boolean)
-    blurb_text = "de la que" if book.blurb else "donde"
+    blurb_text = "Sobre ese título" if book.blurb else "Ahí"
 
     # Handle edition for "por primera vez"
     primera_vez = " por primera vez" if book.edition == 1 else ""
@@ -45,15 +43,15 @@ def generate_caption(book: Book) -> str:
     # Build the caption piece by piece
     # Note: The template uses "{{ book.Notes % picado en <!--post--> }}" for the excerpt.
     # We'll insert the excerpt directly.
-    caption = f"En {book.year} {book.publisher} {verbo} _{book.title}_, de {book.author}, "
-    caption += f"{blurb_text}{primera_vez} dijeron que: «{excerpt}». "
+    caption = f"En {book.year} {book.publisher} {verbo} *{book.title}*, de {book.author}. "
+    caption += f"{blurb_text}{primera_vez} se lee:\n\n «{excerpt}»\n\n"
 
     if book.library:
         caption += f"Una copia se conserva en {book.library}. "
 
     caption += "Hoy está respaldada en el archivo público de BibAV.\n\n"
     caption += "¿Tienes alguna información que agregar o corregir sobre este título o esta copia? Déjala en comentarios.\n\n"
-    caption += "Encuentra el link de descarga, portada y libros relacionados en BibAV (link en bio)"
+    caption += "Encuentra el link de descarga, portada y libros relacionados en BibAV.org"
 
     return caption
 

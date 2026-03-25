@@ -104,21 +104,15 @@ This script:
 - For each book, generates a video, creates a caption, and saves the post to `posts.csv` with the next free date.
 
 ### 4. Set Up Cron Jobs
-Two cron jobs are recommended:
 
-- **Daily posting** (runs a few minutes after the scheduled posting time):
-  ```cron
-  # Example: 11:05 AM on Monday, Friday, Saturday
-  5 11 * * 1,4,5 cd /path/to/project && /usr/bin/python3 daily_post.py
-  ```
+Two cron jobs are required: one for daily posting and one for weekly status updates.
 
-- **Weekly status** (e.g., Monday morning):
-  ```cron
-  # Example: 9:00 AM every Monday
-  0 9 * * 1 cd /path/to/project && /usr/bin/python3 weekly_status.py
-  ```
+**Daily Post** – Runs a few minutes after the scheduled posting time (e.g., 11:05 AM if you post at 11:00).  
+Edit your crontab with `crontab -e` and add:
 
-The `daily_post.py` script finds the post scheduled for today and sends it via Telegram.
+```cron
+# Send scheduled post (adjust minute and hour to match POSTING_HOUR+5)
+5 11 * * 1,4,5 cd /path/to/project && /usr/bin/python3 daily_post.py >> /path/to/project/logs/daily.log 2>&1
 
 ### 5. (Optional) Manual Testing
 Use `simple_test.py` (provided in the repository) to test the whole pipeline on a single book:

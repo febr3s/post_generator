@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/febr3s/BibAV_project/post_generator/env
+set -gx VIRTUAL_ENV /home/febres/Bibav_project/post_generator/env
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH
