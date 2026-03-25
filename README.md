@@ -154,6 +154,7 @@ post_generator/
 ## Testing
 
 - `simple_test.py` verifies that a single book can be processed end‑to‑end.
+- `simple_test_telegram.py` sends a test message using your telegram bot.
 - Unit tests (optional) are in separate files (e.g., `test_data_loader.py`) but not required for normal operation.
 
 ---

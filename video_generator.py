@@ -55,8 +55,8 @@ def generate_video(excerpt: str, zotero_key: str) -> str:
         '[tmp1][v2]xfade=transition=fade:duration=1:offset=8[tmp2];'
         '[tmp2][v3]xfade=transition=fade:duration=1:offset=12[tmp3];'
         '[tmp3][v4]xfade=transition=fade:duration=1:offset=16[final];'
-        '[5:v]scale=150:-1,format=yuv420p[wm];'
-        '[final][wm]overlay=W-w-10:H-h-10" '
+        '[5:v]scale=250:-1,format=yuv420p[wm];'
+        '[final][wm]overlay=(W-w)/2:30" '
         '-c:v libx264 -r 30 -pix_fmt yuv420p output.mp4'
     )
 
