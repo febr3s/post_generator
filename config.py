@@ -6,7 +6,7 @@ load_dotenv()
 
 # Paths - adjust these as needed
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-ZOTERO_CSV_PATH = os.path.join(BASE_DIR, '../../morel-no-code-generator/assets/data/books_zotero.csv')  # Path to the Zotero export CSV
+ZOTERO_CSV_PATH = os.path.join(BASE_DIR, '../../BibAV/assets/data/books_zotero.csv')  # Path to the Zotero export CSV
 POSTS_DB_PATH = os.path.join(BASE_DIR, 'posts.csv')
 OUTPUT_DIR = os.path.join(BASE_DIR, 'video_output')  # Will create subfolders by Zotero key
 
